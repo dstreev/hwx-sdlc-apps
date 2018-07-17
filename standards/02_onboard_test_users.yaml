@@ -5,8 +5,8 @@
 
   vars:
     hs2_jdbc_url: jdbc:hive2://{{ zookeeper_server }}:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2
-    hive_superuser: hive
-    hive_superpassword: hive
+    hive_superuser:          {{ hive_superuser }}
+    hive_superuser_password: {{ hive_superuser_password }}
 
   tasks:
     - name: Create User Home Directories on local filesystem
@@ -77,7 +77,7 @@
         - hdp
 
     - name: Create Private User Database
-      shell: /usr/hdp/current/hive-client/bin/beeline -u "{{ hs2_jdbc_url}}" -n {{ hive_superuser }} -p {{ hive_superpassword }} -e "create database if not exists priv_{{ item }} LOCATION '/user/{{ item }}/datasets/internal.db'"
+      shell: /usr/hdp/current/hive-client/bin/beeline -u "{{ hs2_jdbc_url}}" -n {{ hive_superuser }} -p {{ hive_superuser_password }} -e "create database if not exists priv_{{ item }} LOCATION '/user/{{ item }}/datasets/internal.db'"
       loop:
         - bammbamm
         - fred
