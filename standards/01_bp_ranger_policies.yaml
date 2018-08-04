@@ -20,7 +20,7 @@
             "isAuditEnabled":  true,
             "resources":       {
               "path":          {
-                "values":      ["/apps/hive/warehouse", "/user/*/datasets", "/tmp"],
+                "values":      ["/apps/hive/warehouse","/warehouse/tablespace/managed","/warehouse/tablespace/external","/user/*/datasets", "/tmp"],
                 "isExcludes":  false,
                 "isRecursive": true
               }
