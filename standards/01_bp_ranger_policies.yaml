@@ -296,7 +296,7 @@
             "isAuditEnabled":  true,
             "resources":       {
               "path":          {
-                "values":      ["/apps/hbase/data"],
+                "values":      ["/apps/hbase/data","/apps/hbase/staging"],
                 "isExcludes":  false,
                 "isRecursive": true
               }
@@ -329,6 +329,7 @@
           User-Agent:          "Ansible HDP Best Practices"
       tags:
         - app
+        - hbase
 
     - name:                    Yarn Permissions
       uri:
@@ -420,6 +421,65 @@
           User-Agent:          "Ansible HDP Best Practices"
       tags:
         - apponly
+
+    - name:                    HDP App Permissions
+      uri:
+        url:                   '{{ ranger_url_base }}/service/public/v2/api/policy'
+        body_format:           json
+        body:
+          '{
+            "isEnabled":       true,
+            "service":         "{{ cluster_name }}_hadoop",
+            "name":            "HDP BP - HDP App-Logs Access",
+            "description":     "Best Practices HDFS Permissions for all HDP Users",
+            "isAuditEnabled":  true,
+            "resources":       {
+              "path":          {
+                "values":      ["/app-logs"],
+                "isExcludes":  false,
+                "isRecursive": true
+              }
+            },
+            "policyItems":     [{
+              "accesses":      [{
+                "type":        "read",
+                "isAllowed":   true
+              }, {
+                "type":        "execute",
+                "isAllowed":   true
+              }],
+              "users":         ["{{ mapred_user }}"],
+              "groups":        [],
+              "conditions":    [],
+              "delegateAdmin": false
+            },{
+              "accesses":      [{
+                "type":        "read",
+                "isAllowed":   true
+              },{
+                "type":        "write",
+                "isAllowed":   true
+              }, {
+                "type":        "execute",
+                "isAllowed":   true
+              }],
+              "users":         ["{{ yarn_user }}"],
+              "groups":        [],
+              "conditions":    [],
+              "delegateAdmin": false
+            }]
+          }'
+        method:                POST
+        user:                  '{{ ranger_admin_user }}'
+        password:              '{{ ranger_admin_password }}'
+        force_basic_auth:      yes
+        status_code:           200,400
+        headers:
+          Content-Type:        "application/json; charset=utf8"
+          X-XSRF-HEADER:       "valid"
+          User-Agent:          "Ansible HDP Best Practices"
+      tags:
+        - applogs
 
     - name:                    HDP Mapred Permissions
       uri:
