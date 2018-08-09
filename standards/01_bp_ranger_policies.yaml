@@ -1,3 +1,9 @@
+# These are the base Best Practice Policies for Ranger that need to be setup
+#    fully enable Ranger HDFS Authorization.
+# By setting the HDFS->Advanced ranger-hdfs-security: xasecure.add-hadoop-authorization=false
+#    the posix permissions will no longer be evaluated if a Ranger policy doesn't match.
+# There policies are required to get all the other services working with this model.
+
 - hosts:                       sdlc
 
   tasks:
