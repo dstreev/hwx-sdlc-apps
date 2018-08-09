@@ -24,7 +24,7 @@
             "isAuditEnabled":  true,
             "resources":       {
               "path":          {
-                "values":      ["/apps/hive/warehouse","/warehouse/tablespace/managed","/warehouse/tablespace/external","/user/*/datasets", "/tmp"],
+                "values":      ["/hdp","/apps/hive/warehouse","/warehouse/tablespace/managed","/warehouse/tablespace/external","/user/*/datasets", "/tmp"],
                 "isExcludes":  false,
                 "isRecursive": true
               }
@@ -57,6 +57,7 @@
           User-Agent:          "Ansible HDP Best Practices"
       tags:
         - bp
+        - hive
 
     - name:                    HDP Hive Tmp Permissions
       uri:
@@ -377,6 +378,7 @@
           User-Agent:          "Ansible HDP Best Practices"
       tags:
         - app
+        - yarn
 
     - name:                    HDP App Permissions
       uri:
@@ -421,6 +423,52 @@
           User-Agent:          "Ansible HDP Best Practices"
       tags:
         - apponly
+
+    # The Spark Thrift Servers access HDFS as Hive and YARN
+    - name:                    HDP Service App Permissions
+      uri:
+        url:                   '{{ ranger_url_base }}/service/public/v2/api/policy'
+        body_format:           json
+        body:
+          '{
+            "isEnabled":       true,
+            "service":         "{{ cluster_name }}_hadoop",
+            "name":            "HDP BP - HDP Service Apps Access",
+            "description":     "Best Practices HDFS Permissions for all HDP Users",
+            "isAuditEnabled":  true,
+            "resources":       {
+              "path":          {
+                "values":      ["/","/hdp"],
+                "isExcludes":  false,
+                "isRecursive": true
+              }
+            },
+            "policyItems":     [{
+              "accesses":      [{
+                "type":        "read",
+                "isAllowed":   true
+              }, {
+                "type":        "execute",
+                "isAllowed":   true
+              }],
+              "users":         ["{{ hive_user }}", "{{ yarn_user }}"],
+              "groups":        [],
+              "conditions":    [],
+              "delegateAdmin": false
+            }]
+          }'
+        method:                POST
+        user:                  '{{ ranger_admin_user }}'
+        password:              '{{ ranger_admin_password }}'
+        force_basic_auth:      yes
+        status_code:           200,400
+        headers:
+          Content-Type:        "application/json; charset=utf8"
+          X-XSRF-HEADER:       "valid"
+          User-Agent:          "Ansible HDP Best Practices"
+      tags:
+        - apponly
+        - thrift
 
     - name:                    HDP App Permissions
       uri:
@@ -571,7 +619,7 @@
                   "type": "execute",
                   "isAllowed": true
                 }],
-                "users": ["{{ mapred_user }}", "{{ spark_user }}"],
+                "users": ["{{ hive_user }}","{{ mapred_user }}", "{{ spark_user }}"],
                 "groups": [],
                 "conditions": [],
                 "delegateAdmin": false
@@ -650,6 +698,54 @@
           User-Agent:          "Ansible HDP Best Practices"
       tags:
         - app
+
+    - name:                    HDP Livy Permissions
+      uri:
+        url:                   '{{ ranger_url_base }}/service/public/v2/api/policy'
+        body_format:           json
+        body:
+          '{
+            "isEnabled":       true,
+            "service":         "{{ cluster_name }}_hadoop",
+            "name":            "HDP BP - Livy Access",
+            "description":     "Best Practices HDFS Permissions for Livy",
+            "isAuditEnabled":  true,
+            "resources":       {
+              "path":          {
+                "values":      ["/livy-recovery","/livy2-recovery"],
+                "isExcludes":  false,
+                "isRecursive": false
+              }
+            },
+            "policyItems":     [{
+              "accesses":      [{
+                "type":        "read",
+                "isAllowed":   true
+              }, {
+                "type":        "write",
+                "isAllowed":   true
+              }, {
+                "type":        "execute",
+                "isAllowed":   true
+              }],
+              "users":         ["{{ livy_user }}"],
+              "groups":        [],
+              "conditions":    [],
+              "delegateAdmin": false
+            }]
+          }'
+        method:                POST
+        user:                  '{{ ranger_admin_user }}'
+        password:              '{{ ranger_admin_password }}'
+        force_basic_auth:      yes
+        status_code:           200,400
+        headers:
+          Content-Type:        "application/json; charset=utf8"
+          X-XSRF-HEADER:       "valid"
+          User-Agent:          "Ansible HDP Best Practices"
+      tags:
+        - app
+        - livy
 
     - name:                    HDP Druid Tmp Permissions
       uri:
