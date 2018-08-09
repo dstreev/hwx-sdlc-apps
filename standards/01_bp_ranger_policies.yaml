@@ -385,7 +385,7 @@
           '{
             "isEnabled":       true,
             "service":         "{{ cluster_name }}_hadoop",
-            "name":            "HDP BP - HDP Access",
+            "name":            "HDP BP - HDP Apps Access",
             "description":     "Best Practices HDFS Permissions for all HDP Users",
             "isAuditEnabled":  true,
             "resources":       {
@@ -400,14 +400,11 @@
                 "type":        "read",
                 "isAllowed":   true
               }, {
-                "type":        "write",
-                "isAllowed":   false
-              }, {
                 "type":        "execute",
                 "isAllowed":   true
               }],
-              "users":         ["*"],
-              "groups":        ["*"],
+              "users":         [],
+              "groups":        ["hadoop"],
               "conditions":    [],
               "delegateAdmin": false
             }]
@@ -422,7 +419,7 @@
           X-XSRF-HEADER:       "valid"
           User-Agent:          "Ansible HDP Best Practices"
       tags:
-        - app
+        - apponly
 
     - name:                    HDP Mapred Permissions
       uri:
@@ -432,7 +429,7 @@
           '{
             "isEnabled":       true,
             "service":         "{{ cluster_name }}_hadoop",
-            "name":            "HDP BP - HDP Access",
+            "name":            "HDP BP - HDP Mapred Access",
             "description":     "Best Practices HDFS Permissions for all HDP Users",
             "isAuditEnabled":  true,
             "resources":       {
@@ -463,14 +460,11 @@
                 "type":        "read",
                 "isAllowed":   true
               }, {
-                "type":        "write",
-                "isAllowed":   false
-              }, {
                 "type":        "execute",
                 "isAllowed":   true
               }],
-              "users":         ["*"],
-              "groups":        ["*"],
+              "users":         [],
+              "groups":        ["hadoop"],
               "conditions":    [],
               "delegateAdmin": false
             }]
@@ -486,6 +480,7 @@
           User-Agent:          "Ansible HDP Best Practices"
       tags:
         - app
+        - mapred
 
     - name:                    HDP History Permissions
       uri:
@@ -526,14 +521,11 @@
                   "type": "read",
                   "isAllowed": true
                 }, {
-                  "type": "write",
-                  "isAllowed": false
-                }, {
                   "type": "execute",
                   "isAllowed": true
                 }],
-                "users": ["*"],
-                "groups": ["*"],
+                "users": [],
+                "groups": ["hadoop"],
                 "conditions": [],
                 "delegateAdmin": false
               }
@@ -550,6 +542,7 @@
           User-Agent:          "Ansible HDP Best Practices"
       tags:
         - app
+        - history
 
     - name:                    HDP Tmp Permissions
       uri:
@@ -580,8 +573,8 @@
                 "type":        "execute",
                 "isAllowed":   true
               }],
-              "users":         ["*"],
-              "groups":        ["*"],
+              "users":         [],
+              "groups":        ["hadoop"],
               "conditions":    [],
               "delegateAdmin": false
             }]
@@ -700,7 +693,7 @@
           '{
             "isEnabled":       true,
             "service":         "{{ cluster_name }}_hadoop",
-            "name":            "HDP BP - YARN TMP Access",
+            "name":            "HDP BP - Ambari-QA Tmp Access",
             "description":     "Best Practices HDFS Ambari-QA Permissions for TMP",
             "isAuditEnabled":  true,
             "resources":       {
