@@ -1,0 +1,9 @@
+- hosts: sdlc
+  become: true
+  become_user: '{{ yarn_user }}'
+
+  tasks:
+    - name: Create Node Labels for LLAP
+      shell: yarn rmadmin -addToClusterNodeLabels "LLAP(exclusive=true)"
+
+    # - name:

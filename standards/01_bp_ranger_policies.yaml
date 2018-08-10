@@ -351,7 +351,7 @@
             "isAuditEnabled":  true,
             "resources":       {
               "path":          {
-                "values":      ["/ats"],
+                "values":      ["/ats","/system/yarn/node-labels"],
                 "isExcludes":  false,
                 "isRecursive": true
               }
