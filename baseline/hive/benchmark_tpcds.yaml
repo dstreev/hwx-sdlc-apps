@@ -8,7 +8,7 @@
 
   tasks:
     - name:       Run the analyze sql to build stats for TPCDS Datasets.
-      include_tasks: tpcdps_stats.yaml
+      shell:      cd /home/{{ user }}/hive-testbench; beeline -u "jdbc:hive2://{{ zookeeper_server}}:2181/{{ tpcds_orc_db }};serviceDiscoveryMode=zooKeeper;zooKeeperNamespace={{ hs2_zk_namespace }}" -n "{{ tpcds_user }}" -p "{{ user_password }}" -f "./ddl-tpcds/bin_partitioned/analyze.sql"
       tags:
         - stats
 

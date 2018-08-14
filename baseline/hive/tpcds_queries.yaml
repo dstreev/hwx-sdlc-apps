@@ -18,5 +18,5 @@
 #   loop:     "{{ query_files['files']|flatten(levels=1) }}"
 
 - name:       Running Queries
-  shell:      cd /home/{{ user }}/hive-testbench; echo "@@@{{ item['path'] }}" >> /home/{{ user }}/tpcds_test_results/{{ results_file }}; beeline -u "jdbc:hive2://{{ zookeeper_server}}:2181/{{ tpcds_orc_db }};serviceDiscoveryMode=zooKeeper;zooKeeperNamespace={{ hs2_zk_namespace }}" -n "{{ tpcds_user }}" -p "{{ user_password }}" -f "{{ item['path'] }}" >> /home/{{ user }}/tpcds_test_results/{{ results_file }} 2>&1
+  shell:      cd /home/{{ user }}/hive-testbench; echo "@@@,{{ iteration}},{{ item['path'] }}" >> /home/{{ user }}/tpcds_test_results/{{ results_file }}; beeline -u "jdbc:hive2://{{ zookeeper_server}}:2181/{{ tpcds_orc_db }};serviceDiscoveryMode=zooKeeper;zooKeeperNamespace={{ hs2_zk_namespace }}" -n "{{ tpcds_user }}" -p "{{ user_password }}" -f "{{ item['path'] }}" >> /home/{{ user }}/tpcds_test_results/{{ results_file }} 2>&1
   loop:       "{{ query_files['files']|flatten(levels=1) }}"
