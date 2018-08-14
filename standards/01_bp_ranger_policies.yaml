@@ -9,6 +9,50 @@
   tasks:
     # REST Calls with Ansible: https://linuxctl.com/2017/01/ansible---interacting-with-external-rest-api/
 
+    - name:                    User 'all-path' Policy Additions (for Ambari File Viewer)
+      uri:
+        url:                   '{{ ranger_url_base }}/service/public/v2/api/policy'
+        body_format:           json
+        body:
+          '{
+            "isEnabled":       true,
+            "service":         "{{ cluster_name }}_hadoop",
+            "name":            "HDP BP - User All-Path Policy Additions",
+            "description":     "Best Practices HDFS Permissions for All Paths",
+            "isAuditEnabled":  true,
+            "resources":       {
+              "path":          {
+                "values":      ["/","/user"],
+                "isExcludes":  false,
+                "isRecursive": false
+              }
+            },
+            "policyItems":     [{
+              "accesses":      [{
+                "type":        "read",
+                "isAllowed":   true
+              }, {
+                "type":        "execute",
+                "isAllowed":   true
+              }],
+              "users":         [],
+              "groups":        ["{{ hadoop_group }}"],
+              "conditions":    [],
+              "delegateAdmin": false
+            }]
+          }'
+        method:                POST
+        user:                  '{{ ranger_admin_user }}'
+        password:              '{{ ranger_admin_password }}'
+        force_basic_auth:      yes
+        status_code:           200,400
+        headers:
+          Content-Type:        "application/json; charset=utf8"
+          X-XSRF-HEADER:       "valid"
+          User-Agent:          "Ansible HDP Best Practices"
+      tags:
+        - allpath
+
     # Setup Hive User with Access to
     # - /tmp (recursive).  This is where the tpcds generated files will go.
     # - /apps/hive/warehouse (recursive)

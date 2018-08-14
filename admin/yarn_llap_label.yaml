@@ -1,9 +1,19 @@
 - hosts: sdlc
   become: true
   become_user: '{{ yarn_user }}'
+  vars:
+    node_label: 'LLAP'
 
   tasks:
     - name: Create Node Labels for LLAP
-      shell: yarn rmadmin -addToClusterNodeLabels "LLAP(exclusive=true)"
+      shell: yarn rmadmin -addToClusterNodeLabels "{{ node_label}}(exclusive=true)"
 
-    # - name:
+    - name: Assign LLAP Label to nodes
+      shell: yarn rmadmin -replaceLabelsOnNode "{{ item }}={{ node_label }}"
+      loop:
+        - os10.streever.local
+        - os12.streever.local
+        - os14.streever.local
+        - os16.streever.local
+        - os18.streever.local
+        - os19.streever.local
