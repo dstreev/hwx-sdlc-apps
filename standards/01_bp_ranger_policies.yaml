@@ -937,3 +937,51 @@
           User-Agent:          "Ansible HDP Best Practices"
       tags:
         - app
+
+    - name:                    Ranger Audit Permissions
+      uri:
+        url:                   '{{ ranger_url_base }}/service/public/v2/api/policy'
+        body_format:           json
+        body:
+          '{
+            "isEnabled":       true,
+            "service":         "{{ cluster_name }}_hadoop",
+            "name":            "HDP BP - Ranger Audit Access",
+            "description":     "Best Practice HDFS Permissions for Ranger Audit",
+            "isAuditEnabled":  true,
+            "resources":       {
+              "path":          {
+                "values":      ["/ranger/audit"],
+                "isExcludes":  false,
+                "isRecursive": true
+              }
+            },
+            "policyItems":     [{
+              "accesses":      [{
+                "type":        "read",
+                "isAllowed":   true
+              }, {
+                "type":        "write",
+                "isAllowed":   true
+              }, {
+                "type":        "execute",
+                "isAllowed":   true
+              }],
+              "users":         ["{{ hdfs_user }}","{{ hive_user }}","{{ yarn_user }}", "{{ kafka_user }}", "{{ hbase_user }}", "{{ atlas_user }}", "{{ storm_user }}", "{{ knox_user }}"],
+              "groups":        [],
+              "conditions":    [],
+              "delegateAdmin": false
+            }]
+          }'
+        method:                POST
+        user:                  '{{ ranger_admin_user }}'
+        password:              '{{ ranger_admin_password }}'
+        force_basic_auth:      yes
+        status_code:           200,400
+        headers:
+          Content-Type:        "application/json; charset=utf8"
+          X-XSRF-HEADER:       "valid"
+          User-Agent:          "Ansible HDP Best Practices"
+      tags:
+        - audit
+        - ranger

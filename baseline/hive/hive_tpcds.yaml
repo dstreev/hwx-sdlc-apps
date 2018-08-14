@@ -114,4 +114,4 @@
       tags:
         - build
         - gen
-    # - name: Run Queries
+    # - name: Run Analyze on built tables.
