@@ -1,0 +1,22 @@
+- hosts:          sdlc
+  become:         true
+  become_user:    '{{ user }}'
+
+  vars:
+    tpcds_orc_db: 'tpcds_bin_partitioned_orc_{{ tpcds_size }}'
+    results_file: '{{ ansible_date_time.date}}_{{ ansible_date_time.hour }}-{{ ansible_date_time.minute }}'
+
+  tasks:
+    - name:       Run the analyze sql to build stats for TPCDS Datasets.
+      include_tasks: tpcdps_stats.yaml
+      tags:
+        - stats
+
+    - include_tasks: tpcds_queries.yaml
+      loop:
+        - 1
+        - 2
+        - 3
+        - 4
+      loop_control:
+        loop_var: iteration

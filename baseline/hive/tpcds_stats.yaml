@@ -1,0 +1,41 @@
+- hosts:          sdlc
+  become:         true
+  become_user:    '{{ user }}'
+
+  vars:
+    tpcds_orc_db: 'tpcds_bin_partitioned_orc_{{ tpcds_size_gb}}'
+
+  tasks:
+    - name:       Run the analyze sql to build stats for TPCDS Datasets.
+      shell:      cd /home/{{ user }}/hive-testbench; beeline -u "jdbc:hive2://{{ zookeeper_server}}:2181/{{ tpcds_orc_db }};serviceDiscoveryMode=zooKeeper;zooKeeperNamespace={{ hs2_zk_namespace }}" -n "{{ user }}" -p "{{ user_password }}" -f "./ddl-tpcds/bin_partitioned/analyze.sql"
+      tags:
+        - stats
+
+    - name:       List the tpcds queries.
+      find:
+        paths:  /home/{{ user }}/hive-testbench/sample-queries-tpcds
+        patterns: "query*.sql"
+      register: query_files
+
+    - name: Register DateTime Var
+      shell: date +%Y-%M-%d_%H-%m
+      register: run_date
+
+    - name: Create Result directory
+      file:
+        path: /home/{{ user }}/tpcds_test_results
+        state: directory
+        owner: '{{ user }}'
+        mode: 0755
+
+    - name: Run the queries
+      debug:
+        msg: "Query File: {{ item['path'] }} qf: {{ file['path'] }}"
+      loop: "{{ query_files['files']|flatten(levels=1) }}"
+      loop_control:
+        loop_var: file
+
+    # - name: Run the queries
+    #   shell:      cd /home/{{ user }}/hive-testbench; beeline -u "jdbc:hive2://{{ zookeeper_server}}:2181/{{ tpcds_orc_db }};serviceDiscoveryMode=zooKeeper;zooKeeperNamespace={{ hs2_zk_namespace }}" -n "{{ user }}" -p "{{ user_password }}" -f "{{ item['path'] }}" >> /home/{{ user }}/tpcds_test_results/{{ run_date }} 2>&1
+    #   loop: "{{ query_files['files']|flatten(levels=1) }}"
+      # with_items:    "{{ query_files['files'] }}"
