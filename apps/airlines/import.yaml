@@ -1,0 +1,32 @@
+- hosts: sdlc
+  tasks:
+    - name: Mkdir for Airline Data
+      file:
+        path: /home/{{ user }}/airlines
+        state: directory
+        owner: '{{ user }}'
+        mode: 0755
+    - name: Get Airport Data
+      get_url:
+        url:            https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat
+        dest:           /home/{{ user }}/airports.dat
+        force:          no
+        validate_certs: false
+    - name: Get Airline Data
+      get_url:
+        url:            https://raw.githubusercontent.com/jpatokal/openflights/master/data/airlines.dat
+        dest:           /home/{{ user }}/airlines.dat
+        force:          no
+        validate_certs: false
+    - name: Get Routes Data
+      get_url:
+        url:            https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat
+        dest:           /home/{{ user }}/routes.dat
+        force:          no
+        validate_certs: false
+    - name: Get Planes Data
+      get_url:
+        url:            https://raw.githubusercontent.com/jpatokal/openflights/master/data/planes.dat
+        dest:           /home/{{ user }}/planes.dat
+        force:          no
+        validate_certs: false
