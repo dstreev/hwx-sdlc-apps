@@ -6,7 +6,7 @@
 
   tasks:
     - name: Create Node Labels for LLAP
-      shell: yarn rmadmin -addToClusterNodeLabels "{{ node_label}}(exclusive=true)"
+      shell: yarn rmadmin -addToClusterNodeLabels "{{ node_label}}(exclusive=false)"
 
     - name: Assign LLAP Label to nodes
       shell: yarn rmadmin -replaceLabelsOnNode "{{ item }}={{ node_label }}"
