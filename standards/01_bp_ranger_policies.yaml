@@ -109,7 +109,7 @@
         - bp
         - hive
 
-    - name:                    HDP Hive/Spark Tmp Permissions
+    - name:                    HDP Hive and Spark Tmp Permissions
       uri:
         url:                   '{{ ranger_url_base }}/service/public/v2/api/policy'
         body_format:           json
@@ -117,7 +117,7 @@
           '{
             "isEnabled":       true,
             "service":         "{{ cluster_name }}_hadoop",
-            "name":            "HDP BP - Hive TMP Access",
+            "name":            "HDP BP - Hive and Spark TMP Access",
             "description":     "Best Practices HDFS Hive Permissions for TMP",
             "isAuditEnabled":  true,
             "resources":       {
