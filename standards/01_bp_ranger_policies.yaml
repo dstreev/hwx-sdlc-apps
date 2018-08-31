@@ -109,7 +109,7 @@
         - bp
         - hive
 
-    - name:                    HDP Hive Tmp Permissions
+    - name:                    HDP Hive/Spark Tmp Permissions
       uri:
         url:                   '{{ ranger_url_base }}/service/public/v2/api/policy'
         body_format:           json
