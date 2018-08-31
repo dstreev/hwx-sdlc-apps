@@ -138,7 +138,7 @@
                 "type":        "execute",
                 "isAllowed":   true
               }],
-              "users":         ["{{ hive_user }},{{ spark_user }}"],
+              "users":         ["{{ hive_user }}","{{ spark_user }}"],
               "groups":        [],
               "conditions":    [],
               "delegateAdmin": false
