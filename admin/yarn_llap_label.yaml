@@ -5,6 +5,9 @@
     node_label: 'LLAP'
 
   tasks:
+    - name: Remove Node Labels for LLAP
+      shell: yarn rmadmin -removeFromClusterNodeLabels "{{ node_lable }}"
+      
     - name: Create Node Labels for LLAP
       shell: yarn rmadmin -addToClusterNodeLabels "{{ node_label}}(exclusive=false)"
 
