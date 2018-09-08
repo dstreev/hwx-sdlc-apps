@@ -95,7 +95,7 @@
           }'
         method:                POST
         user:                  '{{ ranger_admin_user }}'
-        password:              '{{ ranger_admin_password }}'
+        password:              '{{ ranger_admin_ldap_password }}'
         force_basic_auth:      yes
         status_code:           200,400
         headers:
