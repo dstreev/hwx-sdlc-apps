@@ -561,7 +561,7 @@
                 "type":        "execute",
                 "isAllowed":   true
               }],
-              "users":         ["{{ yarn_user }}"],
+              "users":         ["{{ yarn_user }}","{{ hive_user}}"],
               "groups":        [],
               "conditions":    [],
               "delegateAdmin": false
