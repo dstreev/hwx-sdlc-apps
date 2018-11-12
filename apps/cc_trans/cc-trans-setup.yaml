@@ -1,0 +1,19 @@
+- hosts: sdlc
+  vars:
+    cc_trans_json_topic: "cc-trans_json"
+    cc_trans_json_topic_partitions: 20
+    cc_trans_json_topic_replication_factor: 2
+    cc_trans_csv_topic: "cc-trans_csv"
+    kafka_bootstrap_servers: "localhost:6667"
+    kafka_bin_dir: "/usr/hdp/current/kafka-broker/bin"
+    zookeeper_quorom: "localhost:2181"
+
+  tasks:
+  #    Create Kafka Topics for CSV and JSON versions
+    - name: Create Kafka Topic for JSON
+      shell: "{{ kafka_bin_dir }}/kafka-topics.sh --if-not-exists --create --topic {{ cc_trans_json_topic }} --partitions {{ cc_trans_json_topic_partitions }} --replication-factor {{ cc_trans_json_topic_replication_factor }} --zookeeper {{ zookeeper_quorom }}"
+      tags:
+      - json
+      - kafka
+      - setup
+
