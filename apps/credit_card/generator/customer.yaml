@@ -3,40 +3,53 @@ description: "transaction"
 output:
   format: "JSON"
 order:
-  - cc_trans
-  - ccn
-  - trans_ts
-  - mcc
-  - mrch_id
-  - st
-  - amnt
+  - id
+  - first_name
+  - last_name
+  - street_num
+  - street
+  - city
+  - state
+  - zip
+  - phone
+  - mrkt_campaign
+  - fico
+  - asof
+  - member_since
 keyFields:
-  - ccn
+  - id
 fields:
   -
     type: "string"
-    name: "cc_trans"
-    characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    name: "id"
+    hash: true
+    messageDigest: "SHA-1"
+    characters: "0123456789"
     range:
-      min: 20
+      min: 7
+      max: 7
+  -
+    type: "string"
+    name: "first_name"
+    range:
+      min: 3
       max: 20
   -
     type: "string"
-    name: "ccn"
-    characters: "0123456789"
+    name: "last_name"
     range:
-      min: 15
-      max: 16
-    pool:
-      size: 50000
+      min: 3
+      max: 20
   -
-    type: "date"
-    name: "trans_ts"
-    increment: true
-    diff: 1000
+    type: "int"
+    name: "street_num"
     range:
-      min: "2018-06-01T07:00:00"
-
+      min: 0
+      max: 9999
+  -
+    type: "string"
+    name: "street"
+    
   -
     type: "int"
     name: "mcc"
@@ -46,12 +59,10 @@ fields:
   -
     type: "string"
     name: "mrch_id"
-    characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     range:
-      min: 10
-      max: 12
-    pool:
-      size: 500
+      min: 3
+      max: 3
   -
     type: "string"
     name: "st"

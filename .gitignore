@@ -1,3 +1,7 @@
+# Project Excludes
+apps/bin/gen-env.sh
+*.met
+
 # Ansible artifacts
 *.retry
 

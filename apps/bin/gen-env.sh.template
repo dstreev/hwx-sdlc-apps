@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+export GEN_JAR=$HOME/data-utility-generator-3.0-SNAPSHOT-shaded.jar
