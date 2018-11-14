@@ -26,7 +26,7 @@ fields:
     type: "ipv4"
     name: "ip_address"
     range:
-      mix: "22.0.0.0"
+      min: "22.0.0.0"
       max: "210.0.0.0"
   -
     type: "string"
