@@ -3,19 +3,13 @@ description: "transaction"
 output:
   format: "JSON"
 order:
-  - id
+  - ccn
   - first_name
   - last_name
   - street_num
   - street
-  - city
-  - state
-  - zip
-  - phone
-  - mrkt_campaign
-  - fico
-  - asof
-  - member_since
+  - st
+  - update_ts
 keyFields:
   - id
 fields:
