@@ -1,12 +1,11 @@
 - hosts: sdlc
   vars:
-    cc_trans_json_topic: "cc-trans_json"
-    cc_trans_json_topic_partitions: 20
-    cc_trans_json_topic_replication_factor: 2
-    cc_trans_csv_topic: "cc-trans_csv"
-    kafka_bootstrap_servers: "localhost:6667"
+    cc_trans_topic: "CC_TRANS_JSON"
+    cc_trans_topic_partitions: 20
+    cc_trans_topic_replication_factor: 2
+    kafka_bootstrap_servers: "os10.streever.local:6667"
     kafka_bin_dir: "/usr/hdp/current/kafka-broker/bin"
-    zookeeper_quorom: "localhost:2181"
+    zookeeper_quorom: "os04.streever.local:2181"
 
   tasks:
   #    Create Kafka Topics for CSV and JSON versions
