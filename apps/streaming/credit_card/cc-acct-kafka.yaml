@@ -1,5 +1,5 @@
 topic:
-  name: "CC_ACCT1_JSON"
+  name: "CC_ACCT_JSON"
   headers:
 type:
   key: "String"

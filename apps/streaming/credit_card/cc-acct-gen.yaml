@@ -1,5 +1,5 @@
-title: "credit card transaction"
-description: "transaction"
+title: "credit card account"
+description: "account"
 output:
   format: "JSON"
 order:
@@ -11,7 +11,7 @@ order:
   - st
   - update_ts
 keyFields:
-  - id
+  - ccn
 fields:
   -
     type: "string"
