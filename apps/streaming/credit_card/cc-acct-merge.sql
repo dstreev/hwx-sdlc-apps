@@ -14,7 +14,7 @@ USING (
       FROM
         CC_ACCT_DELTA
       WHERE
-        PROCESSING_CYCLE = ${processing.cycle}
+        PROCESSING_CYCLE = ${last.processing.cycle}
     ) sub
     WHERE
       sub.rank = 1
