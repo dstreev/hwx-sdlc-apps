@@ -1,8 +1,8 @@
 USE ${database};
 
 FROM CC_TRANS_BRIDGE
+INSERT INTO TABLE CC_TRANS PARTITION (PROCESSING_CYCLE="${acid.processing.cycle.string}")
 SELECT
   CC_TRANS,CCN,TRANS_TS,MCC,MRCH_ID,STATE,AMNT
 WHERE
-  MINUTE_OF_DAY=${last.delta.processing.cycle.int}
-INSERT INTO TABLE CC_TRANS PARTITION (PROCESSING_CYCLE="${acid.processing.cycle.string}")
+  MINUTE_OF_HOUR=${last.delta.processing.cycle.int};
