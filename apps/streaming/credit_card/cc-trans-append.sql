@@ -1,6 +1,6 @@
 USE ${database};
 
-ALTER TABLE CC_TRANS_BRIDGE ADD IF NOT EXISTS PARTITION (processing_cycle="${last.delta.processing.cycle}") location '${base.dir}/processing_cycle=${last.delta.processing.cycle}';
+ALTER TABLE CC_TRANS_BRIDGE ADD IF NOT EXISTS PARTITION (processing_cycle="${last.delta.processing.cycle}");
 
 FROM CC_TRANS_BRIDGE
 INSERT INTO TABLE CC_TRANS PARTITION (PROCESSING_CYCLE="${acid.processing.cycle.string}")
