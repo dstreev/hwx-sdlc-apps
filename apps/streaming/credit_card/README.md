@@ -31,7 +31,7 @@ __CC_ACCT__
 
 ## Checking Client Topic Lag
 
-`/usr/hdp/current/kafka-broker/bin/kafka-consumer-groups.sh --bootstrap-server os10.streever.local:6667 --group NIFI_1 --describe`
+`/usr/hdp/current/kafka-broker/bin/kafka-consumer-groups.sh --bootstrap-server os10.streever.local:6667 --group CC_NIFI_HDFS --describe`
 
 ## Start the CC_ACCT generator
 
