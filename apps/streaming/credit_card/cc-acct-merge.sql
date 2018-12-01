@@ -21,12 +21,13 @@ USING
                 LAST_NAME ,
                 STREET_NUM,
                 STREET    ,
-                STATE     ,
+                S.STATE AS STATE ,
                 LAST_UPDATE_TS,
                 rank() over(partition BY CCN ORDER BY LAST_UPDATE_TS DESC) rank
            FROM
-                CC_ACCT_DELTA
+                CC_ACCT_DELTA D1, STATE S
           WHERE
+                D1.ST = S.ST
                 PROCESSING_CYCLE = ${last.processing.cycle}
           ) sub
     WHERE
