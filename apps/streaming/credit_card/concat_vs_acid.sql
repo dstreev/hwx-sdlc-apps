@@ -35,17 +35,22 @@ create external table cc_trans_part (
     mrch_id string,
     st string,
     amount string)
-PARTITIONED BY (section int)    
+PARTITIONED BY (section string)    
 ROW FORMAT DELIMITED
   FIELDS TERMINATED BY ','
 STORED AS TEXTFILE
 LOCATION '/user/dstreev/datasets/external/cc_trans_part';
 
+describe cc_trans_part;
+
 -- Discover partitions
-msck repair table cc_trans_part;
+MSCK REPAIR TABLE priv_dstreev.cc_trans_part ADD PARTITIONS;
+
+ALTER TABLE priv_dstreev.cc_trans_part RECOVER PARTITIONS;
 
 select * from cc_trans_part limit 10;
-
+use priv_dstreev;
+show tables;
 create table cc_trans (
     cc_trans string,
     ccn string,
@@ -55,3 +60,19 @@ create table cc_trans (
     st string,
     amount string)
 STORED AS ORC;
+
+show create table cc_trans;
+
+insert into table cc_trans
+select cc_trans string,
+    ccn,
+    trans_ts,
+    mcc,
+    mrch_id,
+    st,
+    amount from cc_trans_part where section = 19;
+    
+SHOW COMPACTIONS;
+    
+ALTER TABLE cc_trans COMPACT 'major';
+

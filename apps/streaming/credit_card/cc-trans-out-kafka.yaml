@@ -6,6 +6,7 @@ type:
   value: "String"
 configs:
   bootstrap.servers: "os10.streever.local:6667,os14.streever.local:6667"
+  security.protocol: "SASL_PLAINTEXT"
   acks: "0"
   client.id: "my-gen-app-1"
 #  transactional.id: "my-trans-id-1"
