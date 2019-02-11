@@ -10,5 +10,5 @@ if [ ! -f ../../bin/gen-env.sh ]; then
 fi
 
 . ../../bin/gen-env.sh
-java -jar $GEN_JAR $KAFKA_KERBEROS_PARAMS -cfg cc-trans-json-gen.yaml -scfg cc-trans-out-kafka.yaml
+java $KAFKA_KERBEROS_PARAMS -jar $GEN_JAR -cfg cc-trans-json-gen.yaml -scfg cc-trans-out-kafka.yaml
 
