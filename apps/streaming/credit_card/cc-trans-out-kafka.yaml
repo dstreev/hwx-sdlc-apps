@@ -8,7 +8,6 @@ configs:
   bootstrap.servers: "os10.streever.local:6667,os14.streever.local:6667"
   # Required to address a Kerberized Cluster
   security.protocol: "SASL_PLAINTEXT"
-
   acks: "1"
   client.id: "my-gen-app-1"
 #  transactional.id: "my-trans-id-1"
@@ -20,7 +19,7 @@ configs:
   reties: 10
   buffer.memory: 33554432
   max.block.ms: 10000
-  retry.backoff.ms: 30000
+#  retry.backoff.ms: 30000
                     
 #               KEY_SERIALIZER("key.serializer"),
 #               VALUE_SERIALIZER("value.serializer"),
