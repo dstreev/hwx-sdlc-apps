@@ -74,7 +74,7 @@
             "isAuditEnabled":  true,
             "resources":       {
               "path":          {
-                "values":      ["/hdp","/apps/hive/warehouse","/warehouse/tablespace/managed","/warehouse/tablespace/external","/user/*/datasets", "/tmp"],
+                "values":      ["/hdp","/apps/hive/warehouse","/apps/spark/warehouse","/warehouse/tablespace/managed","/warehouse/tablespace/external", "/tmp"],
                 "isExcludes":  false,
                 "isRecursive": true
               }
@@ -169,7 +169,7 @@
             "isAuditEnabled":  true,
             "resources":       {
               "path":          {
-                "values":      ["/user/{USER}"],
+                "values":      ["/user/{USER}","/warehouse/tablespace/external/hive/priv_{USER}.db"],
                 "isExcludes":  false,
                 "isRecursive": true
               }
@@ -1000,6 +1000,52 @@
             "resources":       {
               "path":          {
                 "values":      ["/atsv2/hbase/data"],
+                "isExcludes":  false,
+                "isRecursive": true
+              }
+            },
+            "policyItems":     [{
+              "accesses":      [{
+                "type":        "read",
+                "isAllowed":   true
+              }, {
+                "type":        "write",
+                "isAllowed":   true
+              }, {
+                "type":        "execute",
+                "isAllowed":   true
+              }],
+              "users":         ["{{ yarn_ats_user }}"],
+              "groups":        [],
+              "conditions":    [],
+              "delegateAdmin": false
+            }]
+          }'
+        method:                POST
+        user:                  '{{ ranger_admin_user }}'
+        password:              '{{ ranger_admin_ldap_password }}'
+        force_basic_auth:      yes
+        status_code:           200,400
+        headers:
+          Content-Type:        "application/json; charset=utf8"
+          X-XSRF-HEADER:       "valid"
+          User-Agent:          "Ansible HDP Best Practices"
+      tags:
+        - yarn
+    - name:                    Smart Sense Activity Analyzer Service Access to HDFS
+      uri:
+        url:                   '{{ ranger_url_base }}/service/public/v2/api/policy'
+        body_format:           json
+        body:
+                               '{
+            "isEnabled":       true,
+            "service":         "{{ cluster_name }}_hadoop",
+            "name":            "HDP BP - Smart Sense Activity Analyzer Service Access",
+            "description":     "Best Practices Smart Sense Activity Analyzer Services",
+            "isAuditEnabled":  true,
+            "resources":       {
+              "path":          {
+                "values":      ["/warehouse/tablespace/external/hive"],
                 "isExcludes":  false,
                 "isRecursive": true
               }

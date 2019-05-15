@@ -18,9 +18,8 @@ configs:
   metadata.max.age.ms: 0
   reties: 10
   buffer.memory: 33554432
-  max.block.ms: 10000
-#  retry.backoff.ms: 30000
-                    
+#  max.block.ms: 10000
+  retry.backoff.ms: 30000
 #               KEY_SERIALIZER("key.serializer"),
 #               VALUE_SERIALIZER("value.serializer"),
 #               ACKS("acks"),
