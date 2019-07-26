@@ -4,7 +4,7 @@
 
 - hosts: sdlc
   become: true
-  become_user: '{{ user }}'
+  become_user: '{{ tpcds_user }}'
 
   vars:
     hive_testbench: https://github.com/hortonworks/hive-testbench.git
@@ -12,16 +12,16 @@
   tasks:
     - name: Create Hive TPCPS Local Directory
       file:
-        path: /home/{{ user }}/hive-testbench
+        path: /home/{{ tpcds_user }}/hive-testbench
         state: directory
-        owner: '{{ user }}'
+        owner: '{{ tpcds_user }}'
         mode: 0744
     - name: Clone TPCDS (Hive-testbench)
       git:
         repo: https://github.com/hortonworks/hive-testbench.git
-        dest: /home/{{ user }}/hive-testbench
+        dest: /home/{{ tpcds_user }}/hive-testbench
 
-    - name:                    TPCDS Database Access for {{ user }}
+    - name:                    TPCDS Database Access for {{ tpcds_user }}
       uri:
         url:                   '{{ ranger_url_base }}/service/public/v2/api/policy'
         body_format:           json
@@ -87,7 +87,7 @@
                 "type":        "serviceadmin",
                 "isAllowed":   true
               }],
-              "users":         ["{{ user }}"],
+              "users":         ["{{ tpcds_user }}"],
               "groups":        [],
               "conditions":    [],
               "delegateAdmin": false
@@ -106,11 +106,11 @@
         - ranger
 
     - name: Build TPCDS
-      shell: cd /home/{{ user }}/hive-testbench; ./tpcds-build.sh
+      shell: cd /home/{{ tpcds_user }}/hive-testbench; ./tpcds-build.sh
       tags:
         - build
     - name: Create TPCDS Dataset and Build Hive Tables
-      shell: cd /home/{{ user }}/hive-testbench; ./tpcds-setup.sh {{ tpcds_size }}
+      shell: cd /home/{{ tpcds_user }}/hive-testbench; ./tpcds-setup.sh {{ tpcds_size }}
       tags:
         - build
         - gen
